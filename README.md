@@ -15,10 +15,12 @@ optional arguments:
   -h, --help            show this help message and exit
   -i INTERVAL, --interval INTERVAL
                         time interval between jokes in seconds (default: 15)
+  -d DURATION, --duration DURATION
+                        duration in seconds to fetch jokes (default is 60
+                        seconds)
 ```
 
 ## Future Work
-- Allow users to adjust the total time to fetch jokes for.
 - Allow users to specify the number of jokes they want to fetch.
 - Allow users to search for jokes based on a keyword.
 
