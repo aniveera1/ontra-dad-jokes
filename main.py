@@ -1,5 +1,6 @@
-import requests
 import time
+
+import requests
 
 DAD_JOKE_URL = "https://icanhazdadjoke.com/"
 
