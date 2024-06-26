@@ -6,7 +6,7 @@ import requests
 DAD_JOKE_URL = "https://icanhazdadjoke.com/"
 
 
-def main(joke_interval):
+def main(joke_interval: int):
     start_time = time.time()
 
     while time.time() - start_time < 60:
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         "--interval",
         type=int,
         default=15,
-        help="Time interval in seconds between each joke (default is 15 seconds).",
+        help="time interval in seconds between each joke (default is 15 seconds)",
     )
     args = parser.parse_args()
-    main(args)
+    main(args.interval)

@@ -9,10 +9,15 @@ Two fish are in a tank, one turns to the other and says, "how do you drive this 
 - `make install`
 
 ## Usage
-- `python main.py`
+```
+python src/main.py [-h] [-i INTERVAL]
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INTERVAL, --interval INTERVAL
+                        time interval between jokes in seconds (default: 15)
+```
 
 ## Future Work
-- Allow users to adjust the time interval between jokes.
 - Allow users to adjust the total time to fetch jokes for.
 - Allow users to specify the number of jokes they want to fetch.
 - Allow users to search for jokes based on a keyword.

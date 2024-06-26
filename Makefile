@@ -13,3 +13,7 @@ install: ## Install project dependencies.
 fmt:     ## Format code using black and isort.
 	black -l 100 .
 	isort --profile black .
+
+.PHONY: lint
+lint:    ## Lint code using mypy.
+	mypy src/
