@@ -1,21 +1,30 @@
 import argparse
 import time
+from typing import Optional
 
 import requests
 
 DAD_JOKE_URL = "https://icanhazdadjoke.com/"
 
 
-def main(interval: int, duration: int):
-    start_time = time.time()
+def should_fetch_joke(duration: int, start_time: float, total: Optional[int], count: int):
+    if total is not None:
+        return count < total
+    return time.time() - start_time < duration
 
-    while time.time() - start_time < duration:
+
+def main(interval: int, duration: int, total: Optional[int]):
+    start_time = time.time()
+    count = 0
+
+    while should_fetch_joke(duration, start_time, total, count):
         headers = {
             "accept": "application/json",
         }
 
         print(requests.get(DAD_JOKE_URL, headers=headers).json()["joke"])
 
+        count += 1
         time.sleep(interval)
 
 
@@ -37,5 +46,11 @@ if __name__ == "__main__":
         default=60,
         help="duration in seconds to fetch jokes (default is 60 seconds)",
     )
+    parser.add_argument(
+        "-t",
+        "--total",
+        type=int,
+        help="total number of jokes to fetch (overrides duration, default is None)",
+    )
     args = parser.parse_args()
-    main(args.interval, args.duration)
+    main(args.interval, args.duration, args.total)

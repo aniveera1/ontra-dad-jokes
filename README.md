@@ -10,7 +10,7 @@ Two fish are in a tank, one turns to the other and says, "how do you drive this 
 
 ## Usage
 ```
-python src/main.py [-h] [-i INTERVAL]
+python src/main.py [-h] [-i INTERVAL] [-d DURATION] [-t TOTAL]
 optional arguments:
   -h, --help            show this help message and exit
   -i INTERVAL, --interval INTERVAL
@@ -18,10 +18,12 @@ optional arguments:
   -d DURATION, --duration DURATION
                         duration in seconds to fetch jokes (default is 60
                         seconds)
+  -t TOTAL, --total TOTAL
+                        total number of jokes to fetch (overrides duration,
+                        default is None)
 ```
 
 ## Future Work
-- Allow users to specify the number of jokes they want to fetch.
 - Allow users to search for jokes based on a keyword.
 
 ## Contributing
