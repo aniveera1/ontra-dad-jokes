@@ -3,10 +3,16 @@ import time
 from typing import Optional
 
 from config import DAD_JOKE_SEARCH_URL, DAD_JOKE_URL
-from joke_fetcher import fetch_joke, should_fetch_joke
+from joke_fetcher import fetch_joke, should_fetch_joke, validate_joke_args
 
 
 def main(interval: int, duration: int, total: Optional[int], search: Optional[str]):
+    try:
+        validate_joke_args(interval, duration, total, search)
+    except ValueError as e:
+        print(e)
+        return
+
     start_time = time.time()
     count = 0
     next_page = 1
