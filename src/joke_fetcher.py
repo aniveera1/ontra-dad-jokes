@@ -23,7 +23,7 @@ def should_fetch_joke(
 ) -> bool:
     if total is not None:
         return count < total
-    return current_time - start_time < duration
+    return current_time - start_time <= duration
 
 
 def fetch_joke(url: str) -> dict:
