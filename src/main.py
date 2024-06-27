@@ -19,10 +19,26 @@ def main(interval: int, duration: int, total: Optional[int], search: Optional[st
 
     while should_fetch_joke(duration, time.time(), start_time, total, count):
         if search is not None:
-            joke = fetch_joke(DAD_JOKE_SEARCH_URL.format(page=next_page, term=search))
+            try:
+                joke = fetch_joke(DAD_JOKE_SEARCH_URL.format(page=next_page, term=search))
+            except Exception as e:
+                print(e)
+                return
+
+            if joke["total_jokes"] == 0:
+                print(f"No jokes found for search term: {search}")
+                return
+            if len(joke["results"]) == 0:
+                print(f"No more jokes found for search term: {search}")
+                return
             print(joke["results"][0]["joke"])
         else:
-            joke = fetch_joke(DAD_JOKE_URL)
+            try:
+                joke = fetch_joke(DAD_JOKE_URL)
+            except Exception as e:
+                print(e)
+                return
+
             print(joke["joke"])
 
         next_page += 1
