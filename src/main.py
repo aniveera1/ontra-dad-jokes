@@ -20,9 +20,16 @@ def main(interval: int, duration: int, total: Optional[int]):
     while should_fetch_joke(duration, start_time, total, count):
         headers = {
             "accept": "application/json",
+            "User-Agent": "dad-joke-fetcher (https://github.com/aniveera1)",
         }
 
-        print(requests.get(DAD_JOKE_URL, headers=headers).json()["joke"])
+        response = requests.get(DAD_JOKE_URL, headers=headers)
+        if response.status_code != 200:
+            print(f"Error: failed to fetch joke")
+            print(f"{response.status_code} - {response.reason}")
+            return
+
+        print(response.json()["joke"])
 
         count += 1
         time.sleep(interval)
@@ -44,7 +51,7 @@ if __name__ == "__main__":
         "--duration",
         type=int,
         default=60,
-        help="duration in seconds to fetch jokes (default is 60 seconds)",
+        help="duration in seconds to fetch jokes for (default is 60 seconds)",
     )
     parser.add_argument(
         "-t",
