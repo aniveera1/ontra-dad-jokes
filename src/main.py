@@ -2,22 +2,8 @@ import argparse
 import time
 from typing import Optional
 
-import requests
-
-from config import DAD_JOKE_SEARCH_URL, DAD_JOKE_URL, HEADERS
-
-
-def should_fetch_joke(duration: int, start_time: float, total: Optional[int], count: int) -> bool:
-    if total is not None:
-        return count < total
-    return time.time() - start_time < duration
-
-
-def fetch_joke(url: str) -> dict:
-    response = requests.get(url, headers=HEADERS)
-    if response.status_code != 200:
-        raise Exception(f"Error: failed to fetch joke\n{response.status_code} - {response.reason}")
-    return response.json()
+from config import DAD_JOKE_SEARCH_URL, DAD_JOKE_URL
+from joke_fetcher import fetch_joke, should_fetch_joke
 
 
 def main(interval: int, duration: int, total: Optional[int], search: Optional[str]):
@@ -25,7 +11,7 @@ def main(interval: int, duration: int, total: Optional[int], search: Optional[st
     count = 0
     next_page = 1
 
-    while should_fetch_joke(duration, start_time, total, count):
+    while should_fetch_joke(duration, time.time(), start_time, total, count):
         if search is not None:
             joke = fetch_joke(DAD_JOKE_SEARCH_URL.format(page=next_page, term=search))
             print(joke["results"][0]["joke"])

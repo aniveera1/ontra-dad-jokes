@@ -17,3 +17,7 @@ fmt:     ## Format code using black and isort.
 .PHONY: lint
 lint:    ## Lint code using mypy.
 	mypy src/
+
+.PHONY: test
+test:    ## Run tests.
+	pytest src/
