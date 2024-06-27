@@ -10,7 +10,7 @@ Two fish are in a tank, one turns to the other and says, "how do you drive this 
 
 ## Usage
 ```
-python src/main.py [-h] [-i INTERVAL] [-d DURATION] [-t TOTAL]
+python src/main.py [-h] [-i INTERVAL] [-d DURATION] [-t TOTAL] [-s SEARCH]
 
 Fetch random dad jokes and output them to the console.
 
@@ -23,6 +23,8 @@ optional arguments:
   -t TOTAL, --total TOTAL
                         total number of jokes to fetch (overrides duration, default is
                         None)
+  -s SEARCH, --search SEARCH
+                        search for jokes with the given term in them (default is None)
 ```
 
 ## License

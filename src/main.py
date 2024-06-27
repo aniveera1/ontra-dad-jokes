@@ -4,33 +4,36 @@ from typing import Optional
 
 import requests
 
-DAD_JOKE_URL = "https://icanhazdadjoke.com/"
+from config import DAD_JOKE_SEARCH_URL, DAD_JOKE_URL, HEADERS
 
 
-def should_fetch_joke(duration: int, start_time: float, total: Optional[int], count: int):
+def should_fetch_joke(duration: int, start_time: float, total: Optional[int], count: int) -> bool:
     if total is not None:
         return count < total
     return time.time() - start_time < duration
 
 
-def main(interval: int, duration: int, total: Optional[int]):
+def fetch_joke(url: str) -> dict:
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code != 200:
+        raise Exception(f"Error: failed to fetch joke\n{response.status_code} - {response.reason}")
+    return response.json()
+
+
+def main(interval: int, duration: int, total: Optional[int], search: Optional[str]):
     start_time = time.time()
     count = 0
+    next_page = 1
 
     while should_fetch_joke(duration, start_time, total, count):
-        headers = {
-            "accept": "application/json",
-            "User-Agent": "dad-joke-fetcher (https://github.com/aniveera1)",
-        }
+        if search is not None:
+            joke = fetch_joke(DAD_JOKE_SEARCH_URL.format(page=next_page, term=search))
+            print(joke["results"][0]["joke"])
+        else:
+            joke = fetch_joke(DAD_JOKE_URL)
+            print(joke["joke"])
 
-        response = requests.get(DAD_JOKE_URL, headers=headers)
-        if response.status_code != 200:
-            print(f"Error: failed to fetch joke")
-            print(f"{response.status_code} - {response.reason}")
-            return
-
-        print(response.json()["joke"])
-
+        next_page += 1
         count += 1
         time.sleep(interval)
 
@@ -59,5 +62,11 @@ if __name__ == "__main__":
         type=int,
         help="total number of jokes to fetch (overrides duration, default is None)",
     )
+    parser.add_argument(
+        "-s",
+        "--search",
+        type=str,
+        help="search for jokes with the given term in them (default is None)",
+    )
     args = parser.parse_args()
-    main(args.interval, args.duration, args.total)
+    main(args.interval, args.duration, args.total, args.search)
